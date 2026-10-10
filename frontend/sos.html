@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send SOS | ResQlink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/sos.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+    <link rel="stylesheet" href="./css/lang-switcher.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A]">
+    <!-- Global Emergency Alert Banner -->
+    <div class="emergency-alert-banner">
+      <div class="alert-pulse-icon"></div>
+      <span class="text-sm md:text-base">
+        <strong class="uppercase mr-2">Cyclone Warning:</strong>
+        Immediate evacuation ordered for coastal Sector 7 and 9. Stay away from low-lying areas.
+      </span>
+      <a href="./protocols.html" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-xs font-bold transition-colors">VIEW PROTOCOLS</a>
+    </div>
+
+    <!-- Mobile Top Navigation Bar (Sticky) -->
+    <nav class="nav-bottom-bar">
+      <a href="./index.html" class="nav-item-mobile">
+        <i data-feather="home"></i>
+        <span>Home</span>
+      </a>
+      <a href="./dashboard.html" class="nav-item-mobile">
+        <i data-feather="activity"></i>
+        <span>Dash</span>
+      </a>
+      <a href="./sos.html" class="nav-item-mobile danger active">
+        <i data-feather="alert-circle"></i>
+        <span>SOS</span>
+      </a>
+      <a href="./helpline.html" class="nav-item-mobile">
+        <i data-feather="phone"></i>
+        <span>Help</span>
+      </a>
+      <a href="./map.html" class="nav-item-mobile">
+        <i data-feather="map"></i>
+        <span>Map</span>
+      </a>
+      <a href="./protocols.html" class="nav-item-mobile">
+        <i data-feather="shield"></i>
+        <span>Tips</span>
+      </a>
+    </nav>
+    <!-- Desktop Header -->
+    <header class="nav-desktop-header sticky top-0 z-[60] bg-[#0A0A0A]/95 backdrop-blur-md px-4 py-4 md:py-6 border-b border-[#333333] transition-all duration-300">
+      <div
+        class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4"
+      >
+        <a href="./index.html" class="text-2xl font-medium shrink-0"
+          >ResQlink</a
+        >
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end">
+          <div
+            class="flex items-center gap-2 bg-[#333333] px-3 py-1 rounded-full"
+          >
+            <i id="connectivityIcon" data-feather="loader" class="w-4 h-4"></i>
+            <span id="connectivityLabelDesktop" class="text-sm offline-badge hidden sm:inline"
+              >Checking network...</span
+            >
+            <span id="connectivityLabelMobile" class="text-sm offline-badge sm:hidden">Checking...</span>
+          </div>
+
+          <!-- Helpline -->
+          <a
+            href="./helpline.html"
+            class="bg-red-600/20 text-red-400 border border-red-500/30 px-3 md:px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-red-600 hover:text-white transition"
+          >
+            <i data-feather="phone" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Helplines</span>
+          </a>
+
+          <!-- Language Switcher: Replaced by FAB -->
+        </div>
+      </div>
+    </header>
+
+    <main class="w-full max-w-[1400px] mx-auto px-4 md:px-8 py-12">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-medium mb-4">
+          Send Distress Signal
+        </h1>
+        <p data-i18n="desc" class="text-[#D3D3D3]">
+          This alert will be sent to all nearby responders with your location.
+        </p>
+      </div>
+
+      <!-- Quick Emergency Action Buttons -->
+      <div class="mb-8 p-6 bg-red-600/10 border border-red-500/30 rounded-2xl">
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <i data-feather="zap" class="w-5 h-5 text-red-500"></i>
+          <span data-i18n="quickActions">Quick Emergency Actions</span>
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <a href="tel:112" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl text-center transition-all group">
+            <i data-feather="phone-call" class="w-6 h-6 mx-auto mb-2 group-hover:animate-pulse"></i>
+            <div class="text-sm font-bold">112</div>
+            <div class="text-xs opacity-80">Emergency</div>
+          </a>
+          <a href="tel:102" class="bg-green-600 hover:bg-green-700 text-white p-4 rounded-xl text-center transition-all group">
+            <i data-feather="heart" class="w-6 h-6 mx-auto mb-2 group-hover:animate-pulse"></i>
+            <div class="text-sm font-bold">102</div>
+            <div class="text-xs opacity-80">Ambulance</div>
+          </a>
+          <a href="tel:101" class="bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-xl text-center transition-all group">
+            <i data-feather="flame" class="w-6 h-6 mx-auto mb-2 group-hover:animate-pulse"></i>
+            <div class="text-sm font-bold">101</div>
+            <div class="text-xs opacity-80">Fire</div>
+          </a>
+          <a href="tel:100" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl text-center transition-all group">
+            <i data-feather="shield" class="w-6 h-6 mx-auto mb-2 group-hover:animate-pulse"></i>
+            <div class="text-sm font-bold">100</div>
+            <div class="text-xs opacity-80">Police</div>
+          </a>
+        </div>
+        <button id="shareLoc" class="w-full mt-3 bg-white/10 hover:bg-white/20 text-white p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+          <i data-feather="share-2" class="w-4 h-4"></i>
+          <span data-i18n="shareLocation">Share Location via SMS</span>
+        </button>
+        <button id="toggleOfflineTest" type="button" class="w-full mt-2 bg-orange-600/20 hover:bg-orange-600/30 border border-orange-500/40 text-orange-200 p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+          <i data-feather="wifi-off" class="w-4 h-4"></i>
+          <span id="offlineTestLabel">Enable Offline Test Mode</span>
+        </button>
+      </div>
+
+      <!-- Battery & Status Bar -->
+      <div class="mb-6 grid grid-cols-2 gap-4">
+        <div class="p-4 bg-[#1A1A1A] border border-[#333333] rounded-xl">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-feather="battery-charging" id="batteryIcon" class="w-5 h-5 text-green-500"></i>
+              <span class="text-sm font-medium">Battery</span>
+            </div>
+            <span id="batteryLevel" class="text-lg font-bold text-green-500">--</span>
+          </div>
+          <button id="batterySaver" class="mt-2 w-full bg-white/5 hover:bg-white/10 text-xs py-1.5 rounded transition-all">
+            Enable Power Saver
+          </button>
+        </div>
+        <div class="p-4 bg-[#1A1A1A] border border-[#333333] rounded-xl">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-feather="users" class="w-5 h-5 text-blue-500"></i>
+              <span class="text-sm font-medium">Nearby Help</span>
+            </div>
+            <span id="nearbyCount" class="text-lg font-bold text-blue-500">12</span>
+          </div>
+          <div class="mt-2 text-xs text-gray-400">
+            <span id="eta">~5 min away</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Contacts Section -->
+      <div class="mb-6 p-6 bg-[#1A1A1A] border border-[#333333] rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-bold flex items-center gap-2">
+            <i data-feather="phone-call" class="w-5 h-5 text-blue-500"></i>
+            <span data-i18n="emergencyContacts">Emergency Contacts</span>
+          </h2>
+          <button id="toggleContactForm" type="button" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+            + Add Contact
+          </button>
+        </div>
+
+        <!-- Add Contact Form (Hidden by default) -->
+        <div id="contactForm" class="hidden mb-4 p-4 bg-white/5 rounded-lg">
+          <div class="grid md:grid-cols-2 gap-3">
+            <input
+              type="text"
+              id="contactName"
+              placeholder="Contact Name"
+              class="form-input px-3 py-2 rounded-lg text-sm"
+            />
+            <input
+              type="tel"
+              id="contactPhone"
+              placeholder="Phone Number"
+              class="form-input px-3 py-2 rounded-lg text-sm"
+            />
+          </div>
+          <div class="flex gap-2 mt-3">
+            <button id="saveContact" type="button" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm transition-all">
+              Save Contact
+            </button>
+            <button id="cancelContact" type="button" class="px-4 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-sm transition-all">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- Contacts List -->
+        <div id="contactsList" class="space-y-2 mb-4">
+          <p class="text-sm text-gray-400 text-center py-4">No emergency contacts saved yet</p>
+        </div>
+
+        <!-- Send to All Contacts Button -->
+        <button id="sendToAllContacts" type="button" class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          <i data-feather="send" class="w-4 h-4"></i>
+          <span>Send SOS to All Contacts</span>
+        </button>
+      </div>
+
+      <!-- Help Status / Countdown Timer -->
+      <div id="helpStatus" class="hidden mb-6 p-6 bg-gradient-to-br from-green-900/30 to-blue-900/30 border border-green-500/30 rounded-xl">
+        <div class="text-center">
+          <div class="flex items-center justify-center gap-2 mb-3">
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <h3 class="text-lg font-bold text-green-400">Help is on the way!</h3>
+          </div>
+          <div class="mb-4">
+            <div class="text-3xl font-bold text-white mb-1" id="etaCountdown">~5 min</div>
+            <p class="text-sm text-gray-300">Estimated arrival time</p>
+          </div>
+          <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+            <div id="progressBar" class="bg-gradient-to-r from-green-500 to-blue-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+          </div>
+          <p class="text-xs text-gray-400 mt-3">
+            <span id="respondersCount">3</span> responders have been notified
+          </p>
+        </div>
+      </div>
+
+      <form id="sosForm" class="space-y-6">
+        <!-- Basic Info Row -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label data-i18n="nameLbl" class="block mb-2">Your Name</label>
+            <input
+              type="text"
+              id="nameInput"
+              data-i18n-placeholder="nameLbl"
+              class="form-input w-full px-4 py-3 rounded-lg"
+              placeholder="Full name (optional)"
+            />
+          </div>
+          <div>
+            <label data-i18n="peopleCount" class="block mb-2">People Affected</label>
+            <select id="peopleInput" class="form-input w-full px-4 py-3 rounded-lg">
+              <option value="1">1 Person</option>
+              <option value="2">2 People</option>
+              <option value="3-5">3-5 People</option>
+              <option value="6-10">6-10 People</option>
+              <option value="10+">10+ People</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label data-i18n="locLbl" class="block mb-2">Location</label>
+          <div class="relative">
+            <input
+              type="text"
+              id="locationInput"
+              class="form-input w-full px-4 py-3 pr-24 rounded-lg bg-[#1A1A1A] border border-[#333333] text-white placeholder-[#666666]"
+              data-i18n-placeholder="detect"
+              placeholder="Detecting..."
+              value="Detecting location..."
+              readonly
+            />
+
+            <!-- Detect Location Button -->
+            <button
+              type="button"
+              id="detectLocation"
+              class="ui-icon-btn absolute right-12 top-1/2 -translate-y-1/2 text-[#D3D3D3] hover:text-white"
+              title="Detect Location"
+            >
+              <i data-feather="map-pin"></i>
+            </button>
+
+            <!-- Redirect to Map Button -->
+            <button
+              type="button"
+              id="openMap"
+              class="ui-icon-btn absolute right-3 top-1/2 -translate-y-1/2 text-[#D3D3D3] hover:text-white"
+              title="Open Map to Select Location"
+            >
+              <i data-feather="map"></i>
+            </button>
+          </div>
+
+          <p data-i18n="services" class="text-sm text-[#D3D3D3] mt-1">
+            We are using your device location services, or you can select
+            manually on the map.
+          </p>
+        </div>
+
+        <div>
+          <label data-i18n="typeLbl" class="block mb-2"
+            >Type of Emergency</label
+          >
+          <select id="typeInput" class="form-input w-full px-4 py-3 rounded-lg">
+            <option value="" data-i18n="typeLbl">Select emergency type</option>
+            <option value="medical" data-i18n="med">Medical Emergency</option>
+            <option value="trapped" data-i18n="trap">
+              Trapped/Rescue Needed
+            </option>
+            <option value="fire" data-i18n="fire">Fire</option>
+            <option value="flood" data-i18n="flood">Flood</option>
+            <option value="earthquake">Earthquake</option>
+            <option value="accident">Accident</option>
+            <option value="other" data-i18n="other">Other Critical Need</option>
+          </select>
+        </div>
+
+        <!-- Medical Information Section -->
+        <div class="p-6 bg-[#1A1A1A] border border-[#333333] rounded-xl">
+          <h3 class="font-bold mb-4 flex items-center gap-2">
+            <i data-feather="activity" class="w-5 h-5 text-red-500"></i>
+            <span data-i18n="medicalInfo">Medical Information</span>
+          </h3>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block mb-2 text-sm">Injury Severity</label>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <label class="flex items-center gap-2 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-all">
+                  <input type="radio" name="injury" value="none" class="accent-green-500" checked>
+                  <span class="text-sm">None</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-all">
+                  <input type="radio" name="injury" value="minor" class="accent-yellow-500">
+                  <span class="text-sm">Minor</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-all">
+                  <input type="radio" name="injury" value="severe" class="accent-orange-500">
+                  <span class="text-sm">Severe</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-all">
+                  <input type="radio" name="injury" value="critical" class="accent-red-500">
+                  <span class="text-sm">Critical</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block mb-2 text-sm">Medical Conditions</label>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" name="condition" value="diabetes" class="accent-blue-500">
+                    <span>Diabetes</span>
+                  </label>
+                  <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" name="condition" value="heart" class="accent-blue-500">
+                    <span>Heart Disease</span>
+                  </label>
+                  <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" name="condition" value="asthma" class="accent-blue-500">
+                    <span>Asthma</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="block mb-2 text-sm">Allergies</label>
+                <input
+                  type="text"
+                  id="allergiesInput"
+                  class="form-input w-full px-3 py-2 rounded-lg text-sm"
+                  placeholder="e.g., Penicillin, Peanuts"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label data-i18n="detailsLbl" class="block mb-2"
+            >Additional Details</label
+          >
+          <textarea
+            id="detailsInput"
+            class="form-input w-full px-4 py-3 rounded-lg h-32"
+            data-i18n-placeholder="detailsLbl"
+            placeholder="Brief description of your emergency"
+          ></textarea>
+        </div>
+
+        <!-- Voice Recording -->
+        <div class="p-4 bg-[#1A1A1A] border border-[#333333] rounded-xl">
+          <div class="flex items-center justify-between mb-3">
+            <label class="flex items-center gap-2">
+              <i data-feather="mic" class="w-5 h-5 text-blue-500"></i>
+              <span class="font-medium">Voice Message</span>
+            </label>
+            <span id="recordingTime" class="text-sm text-gray-400 hidden">0:00</span>
+          </div>
+          <button
+            type="button"
+            id="recordBtn"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2"
+          >
+            <i data-feather="mic" class="w-5 h-5"></i>
+            <span id="recordBtnText">Start Recording</span>
+          </button>
+          <p class="text-xs text-gray-400 mt-2 text-center">
+            Record a voice message if typing is difficult
+          </p>
+        </div>
+
+        <div>
+          <label data-i18n="photoLbl" class="block mb-2"
+            >Photo/Video Evidence (Optional)</label
+          >
+          <div
+            class="border-2 border-dashed border-[#333333] rounded-lg p-8 text-center hover:border-white transition-all cursor-pointer"
+            id="uploadArea"
+          >
+            <i data-feather="upload" class="w-8 h-8 mx-auto mb-2"></i>
+            <p data-i18n="upload" class="text-[#D3D3D3]">
+              Click to upload or drag and drop
+            </p>
+            <p data-i18n="uploadDesc" class="text-sm text-[#666666] mt-1">
+              Files will be sent when connection is restored
+            </p>
+            <input type="file" id="fileInput" class="hidden" accept="image/*,video/*" multiple>
+          </div>
+          <div id="filePreview" class="mt-3 grid grid-cols-3 gap-2"></div>
+        </div>
+
+        <div class="pt-6">
+          <button
+            type="submit"
+            class="w-full bg-red-600 text-white px-6 py-4 rounded-lg font-bold text-lg flex items-center justify-center gap-2 hover:bg-red-700 transition-all animate-pulse"
+          >
+            <i data-feather="alert-triangle"></i>
+            <span data-i18n="send">SEND EMERGENCY ALERT</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Dynamic Safety Checklist -->
+      <div id="safetyChecklist" class="hidden mt-8 p-6 bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border border-yellow-500/30 rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold flex items-center gap-2">
+            <i data-feather="shield" class="w-5 h-5 text-yellow-500"></i>
+            <span>Safety Guidelines</span>
+          </h3>
+          <button id="toggleChecklist" type="button" class="text-sm text-yellow-400 hover:text-yellow-300">
+            <i data-feather="chevron-down" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div id="checklistContent" class="space-y-3">
+          <!-- Safety tips will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <div class="mt-12 p-4 bg-[#1A1A1A] rounded-lg border border-[#333333]">
+        <div class="flex items-start gap-3">
+          <i data-feather="alert-circle" class="w-5 h-5 mt-0.5"></i>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <h3 data-i18n="offlineTitle" class="font-medium">
+                Offline Notice
+              </h3>
+              <span id="queueCounter" class="hidden text-xs bg-orange-500 px-2 py-1 rounded-full font-bold">
+                0 pending
+              </span>
+            </div>
+            <p data-i18n="offlineMsg" class="text-sm text-[#D3D3D3]">
+              Your alert has been queued and will automatically send when
+              connection is restored. Stay in this location if possible.
+            </p>
+            <div id="queueStatus" class="hidden mt-3 flex items-center gap-2">
+              <div class="flex-1 bg-white/10 rounded-full h-1.5 overflow-hidden">
+                <div id="retryProgress" class="bg-blue-500 h-full rounded-full transition-all" style="width: 0%"></div>
+              </div>
+              <button id="manualRetry" type="button" class="text-xs text-blue-400 hover:text-blue-300">
+                Retry Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pt-20 pb-10 px-4 border-t border-white/5 bg-[#050505] relative z-50">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <!-- Col 1: Brand -->
+          <div class="space-y-6">
+            <h3 class="text-2xl font-bold bg-gradient-to-r from-white to-white/40 bg-clip-text text-transparent">ResQlink</h3>
+            <p class="text-gray-400 leading-relaxed text-sm">Empowering communities with real-time disaster relief coordination and life-saving communication tools.</p>
+          </div>
+          <!-- Col 2: Platform -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Platform</h4>
+            <ul class="space-y-4 text-sm">
+              <li><a href="./map.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"><i data-feather="map" class="w-4 h-4"></i> Live Incident Map</a></li>
+              <li><a href="./sos.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"><i data-feather="alert-triangle" class="w-4 h-4"></i> SOS System</a></li>
+              <li><a href="./dashboard.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"><i data-feather="activity" class="w-4 h-4"></i> Response Dashboard</a></li>
+            </ul>
+          </div>
+          <!-- Col 3: Resources -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Resources</h4>
+            <ul class="space-y-4 text-sm">
+              <li><a href="./protocols.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"><i data-feather="shield" class="w-4 h-4"></i> Safety Protocols</a></li>
+              <li><a href="./dashboard.html" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"><i data-feather="users" class="w-4 h-4"></i> Admin Dashboard</a></li>
+              <li><a href="./helpline.html" class="text-red-500/80 hover:text-red-500 transition-colors flex items-center gap-2 font-bold"><i data-feather="phone" class="w-4 h-4"></i> Emergency Helplines</a></li>
+            </ul>
+          </div>
+          <!-- Col 4: Newsletter -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Stay Updated</h4>
+            <p class="text-xs text-gray-500 leading-relaxed">Subscribe to receive real-time alerts and critical disaster response protocols directly in your inbox.</p>
+            <div class="flex gap-2">
+              <input type="email" placeholder="Email address" class="bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl text-sm outline-none focus:border-white/20 w-full transition-all" />
+              <button class="bg-white text-black p-2.5 rounded-xl hover:bg-gray-200 transition-all flex-shrink-0"><i data-feather="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="mt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p class="text-xs text-gray-500">© 2026 ResQlink. Developed for Community Resilience.</p>
+          <div class="flex gap-8 text-xs text-gray-500">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors">Contact Support</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- API Logic -->
+    <script type="module">
+      feather.replace();
+
+      const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "http://localhost:5000";
+      let forceOfflineMode = false;
+
+      function isOfflineMode() {
+        return forceOfflineMode || !navigator.onLine;
+      }
+
+      function updateConnectivityBadge() {
+        const appOffline = isOfflineMode();
+        const isOnline = !appOffline;
+        const iconEl = document.getElementById("connectivityIcon");
+        const desktopLabel = document.getElementById("connectivityLabelDesktop");
+        const mobileLabel = document.getElementById("connectivityLabelMobile");
+
+        if (!iconEl || !desktopLabel || !mobileLabel) return;
+
+        iconEl.setAttribute("data-feather", isOnline ? "wifi" : "wifi-off");
+        iconEl.classList.toggle("text-green-400", isOnline);
+        iconEl.classList.toggle("text-red-400", !isOnline);
+
+        desktopLabel.textContent = isOnline
+          ? "Online"
+          : (forceOfflineMode ? "Offline (Test)" : "Offline");
+        mobileLabel.textContent = isOnline ? "Online" : "Offline";
+
+        feather.replace();
+      }
+
+      function updateOfflineTestButton() {
+        const btn = document.getElementById("toggleOfflineTest");
+        const label = document.getElementById("offlineTestLabel");
+        if (!btn || !label) return;
+
+        if (forceOfflineMode) {
+          btn.classList.remove("bg-orange-600/20", "hover:bg-orange-600/30", "text-orange-200");
+          btn.classList.add("bg-orange-600", "hover:bg-orange-700", "text-white");
+          label.textContent = "Disable Offline Test Mode";
+        } else {
+          btn.classList.remove("bg-orange-600", "hover:bg-orange-700", "text-white");
+          btn.classList.add("bg-orange-600/20", "hover:bg-orange-600/30", "text-orange-200");
+          label.textContent = "Enable Offline Test Mode";
+        }
+      }
+
+      window.addEventListener("online", updateConnectivityBadge);
+      window.addEventListener("offline", updateConnectivityBadge);
+      updateConnectivityBadge();
+      updateOfflineTestButton();
+
+
+      // Collapse header on scroll
+      let lastScrollTop = 0;
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop && scrollTop > 80) {
+          header.classList.add("collapsed");
+        } else {
+          header.classList.remove("collapsed");
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
+
+      // ========== NOTIFICATION SYSTEM ==========
+      function showNotification(message, type = 'info') {
+        // Remove existing notifications
+        const existing = document.querySelector('.custom-notification');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = `custom-notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.classList.add('show'), 100);
+
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 300);
+        }, 4000);
+      }
+
+      document.getElementById("toggleOfflineTest")?.addEventListener("click", async () => {
+        forceOfflineMode = !forceOfflineMode;
+        updateOfflineTestButton();
+        updateConnectivityBadge();
+
+        if (forceOfflineMode) {
+          showNotification("Offline test mode enabled. New SOS alerts will be queued.", "info");
+          return;
+        }
+
+        showNotification("Offline test mode disabled. Processing queued SOS alerts.", "success");
+        await processOfflineQueue();
+      });
+
+      // ========== MAP LOCATION INTEGRATION ==========
+      // Check if user selected location from map
+      const selectedLocation = sessionStorage.getItem('selectedLocation');
+      if (selectedLocation) {
+        document.getElementById('locationInput').value = selectedLocation;
+        sessionStorage.removeItem('selectedLocation');
+        showNotification('Location loaded from map selection', 'success');
+      }
+
+      // Map redirect - store return URL
+      document.getElementById("openMap").addEventListener("click", () => {
+        sessionStorage.setItem('returnToSOS', 'true');
+        window.location.href = "map.html";
+      });
+
+      // Location detection
+      document
+        .getElementById("detectLocation")
+        .addEventListener("click", () => {
+          if (navigator.geolocation) {
+            document.getElementById("locationInput").value = "Detecting...";
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                const { latitude, longitude } = pos.coords;
+                document.getElementById(
+                  "locationInput"
+                ).value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+                showNotification('Location detected successfully', 'success');
+              },
+              () => {
+                document.getElementById("locationInput").value = "";
+                showNotification("Unable to retrieve location. Please enable GPS or select manually on map.", "error");
+              }
+            );
+          } else {
+            showNotification("Geolocation not supported by your browser.", "error");
+          }
+        });
+
+      // ========== EMERGENCY CONTACTS MANAGEMENT ==========
+      let emergencyContacts = JSON.parse(localStorage.getItem('emergencyContacts')) || [];
+
+      function renderContacts() {
+        const contactsList = document.getElementById('contactsList');
+        const sendToAllBtn = document.getElementById('sendToAllContacts');
+        
+        if (emergencyContacts.length === 0) {
+          contactsList.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">No emergency contacts saved yet</p>';
+          sendToAllBtn.disabled = true;
+        } else {
+          contactsList.innerHTML = emergencyContacts.map((contact, index) => `
+            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                  <i data-feather="user" class="w-5 h-5 text-blue-400"></i>
+                </div>
+                <div>
+                  <div class="font-medium">${contact.name}</div>
+                  <div class="text-sm text-gray-400">${contact.phone}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="tel:${contact.phone}" class="p-2 bg-green-600 hover:bg-green-700 rounded-lg transition-all">
+                  <i data-feather="phone" class="w-4 h-4"></i>
+                </a>
+                <button data-remove-contact="${index}" class="p-2 bg-red-600/20 hover:bg-red-600 rounded-lg transition-all">
+                  <i data-feather="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          `).join('');
+          sendToAllBtn.disabled = false;
+          feather.replace();
+        }
+      }
+
+      // Event delegation for remove contact buttons
+      document.getElementById('contactsList').addEventListener('click', (e) => {
+        const removeBtn = e.target.closest('[data-remove-contact]');
+        if (removeBtn) {
+          const index = parseInt(removeBtn.getAttribute('data-remove-contact'));
+          if (confirm('Remove this contact?')) {
+            emergencyContacts.splice(index, 1);
+            localStorage.setItem('emergencyContacts', JSON.stringify(emergencyContacts));
+            renderContacts();
+          }
+        }
+      });
+
+      document.getElementById('toggleContactForm').addEventListener('click', () => {
+        const form = document.getElementById('contactForm');
+        form.classList.toggle('hidden');
+      });
+
+      document.getElementById('saveContact').addEventListener('click', () => {
+        const name = document.getElementById('contactName').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
+
+        if (!name || !phone) {
+          alert('Please enter both name and phone number');
+          return;
+        }
+
+        emergencyContacts.push({ name, phone });
+        localStorage.setItem('emergencyContacts', JSON.stringify(emergencyContacts));
+        
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactPhone').value = '';
+        document.getElementById('contactForm').classList.add('hidden');
+        
+        renderContacts();
+        showNotification(`✅ ${name} added to emergency contacts`, 'success');
+      });
+
+      document.getElementById('cancelContact').addEventListener('click', () => {
+        document.getElementById('contactForm').classList.add('hidden');
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactPhone').value = '';
+      });
+
+      document.getElementById('sendToAllContacts').addEventListener('click', () => {
+        if (!emergencyContacts.length) {
+          showNotification('Add at least one emergency contact first.', 'error');
+          return;
+        }
+        const location = document.getElementById('locationInput').value;
+        if (!location || location === 'Detecting location...') {
+          showNotification('Please wait for location detection or enter manually.', 'error');
+          return;
+        }
+
+        const message = `🚨 EMERGENCY! I need help at: ${location}. Please send assistance immediately!`;
+        const phones = emergencyContacts.map(c => c.phone).join(',');
+        const smsUrl = `sms:${phones}?body=${encodeURIComponent(message)}`;
+        window.location.href = smsUrl;
+      });
+
+      renderContacts();
+
+      // ========== SAFETY CHECKLIST ==========
+      const safetyTips = {
+        medical: [
+          { icon: 'heart', text: 'Keep the person calm and comfortable' },
+          { icon: 'phone', text: 'Call emergency services immediately' },
+          { icon: 'shield', text: 'Do not move the person unless necessary' },
+          { icon: 'activity', text: 'Monitor breathing and pulse' }
+        ],
+        fire: [
+          { icon: 'alert-triangle', text: 'Stay low to avoid smoke inhalation' },
+          { icon: 'log-out', text: 'Check doors for heat before opening' },
+          { icon: 'x-circle', text: 'Never use elevators during a fire' },
+          { icon: 'users', text: 'Help others evacuate if safe to do so' }
+        ],
+        flood: [
+          { icon: 'arrow-up', text: 'Move to higher ground immediately' },
+          { icon: 'zap', text: 'Avoid walking through moving water' },
+          { icon: 'power', text: 'Stay away from electrical equipment' },
+          { icon: 'car', text: 'Do not drive through flooded areas' }
+        ],
+        earthquake: [
+          { icon: 'shield', text: 'Drop, Cover, and Hold On' },
+          { icon: 'home', text: 'Stay indoors until shaking stops' },
+          { icon: 'alert-octagon', text: 'Stay away from windows and heavy objects' },
+          { icon: 'alert-circle', text: 'Be prepared for aftershocks' }
+        ],
+        trapped: [
+          { icon: 'volume-2', text: 'Make noise to alert rescuers' },
+          { icon: 'battery', text: 'Conserve phone battery' },
+          { icon: 'droplet', text: 'Ration water if available' },
+          { icon: 'clock', text: 'Stay calm and patient' }
+        ],
+        accident: [
+          { icon: 'phone', text: 'Call emergency services immediately' },
+          { icon: 'shield', text: 'Ensure scene is safe before approaching' },
+          { icon: 'heart', text: 'Check for injuries and provide first aid' },
+          { icon: 'camera', text: 'Document the scene if safe to do so' }
+        ]
+      };
+
+      document.getElementById('typeInput').addEventListener('change', (e) => {
+        const type = e.target.value;
+        const checklist = document.getElementById('safetyChecklist');
+        const checklistContent = document.getElementById('checklistContent');
+
+        if (type && safetyTips[type]) {
+          checklist.classList.remove('hidden');
+          checklistContent.innerHTML = safetyTips[type].map(tip => `
+            <div class="flex items-start gap-3 p-3 bg-white/5 rounded-lg">
+              <i data-feather="${tip.icon}" class="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"></i>
+              <span class="text-sm">${tip.text}</span>
+            </div>
+          `).join('');
+          feather.replace();
+          showNotification('Safety guidelines loaded for ' + type, 'info');
+        } else {
+          checklist.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('toggleChecklist').addEventListener('click', () => {
+        const content = document.getElementById('checklistContent');
+        const icon = document.querySelector('#toggleChecklist i');
+        content.classList.toggle('hidden');
+        icon.setAttribute('data-feather', content.classList.contains('hidden') ? 'chevron-down' : 'chevron-up');
+        feather.replace();
+      });
+
+      // Map redirect
+      document.getElementById("openMap").addEventListener("click", () => {
+        window.location.href = "map.html";
+      });
+
+      async function uploadEvidenceFiles(files) {
+        const list = Array.isArray(files) ? files : [];
+        if (!list.length) return [];
+
+        const uploadedUrls = [];
+        for (const file of list) {
+          const formData = new FormData();
+          formData.append("file", file, file.name || "evidence.bin");
+
+          const response = await fetch(`${API_BASE_URL}/upload`, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Evidence upload failed (${response.status})`);
+          }
+
+          const payload = await response.json();
+          const mediaUrl = payload?.result?.cloudinary_url || "";
+          if (mediaUrl) uploadedUrls.push(mediaUrl);
+        }
+
+        return uploadedUrls;
+      }
+
+      // Form submission
+      document
+        .getElementById("sosForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          
+          try {
+            const name = document.getElementById("nameInput").value.trim();
+            const location = document.getElementById("locationInput").value;
+            const type = document.getElementById("typeInput").value;
+            const details = document.getElementById("detailsInput").value.trim();
+            const peopleCount = document.getElementById("peopleInput").value;
+            const injury = document.querySelector('input[name="injury"]:checked')?.value || "none";
+            const conditions = Array.from(document.querySelectorAll('input[name="condition"]:checked')).map(cb => cb.value);
+            const allergies = document.getElementById("allergiesInput").value.trim();
+            const selectedFiles = Array.from(document.getElementById('fileInput')?.files || []);
+
+            if (!location || location === "Detecting location...") {
+              showNotification("Please wait for location detection or select manually on the map.", "error");
+              return;
+            }
+
+            if (!type) {
+              showNotification("Please select an emergency type.", "error");
+              return;
+            }
+
+            const alertPayload = {
+              name: name || "Anonymous",
+              location,
+              type,
+              details,
+              peopleCount,
+              medicalInfo: {
+                injury,
+                conditions,
+                allergies
+              },
+              evidenceMedia: [],
+              timestamp: new Date().toISOString(),
+            };
+
+            if (isOfflineMode()) {
+              offlineQueue.push(alertPayload);
+              localStorage.setItem('sosOfflineQueue', JSON.stringify(offlineQueue));
+              updateQueueStatus();
+              showNotification('Offline mode active. SOS queued and will auto-send when online.', 'info');
+              e.target.reset();
+              return;
+            }
+
+            if (selectedFiles.length > 0) {
+              showNotification('Uploading evidence to Cloudinary...', 'info');
+              const evidenceUrls = await uploadEvidenceFiles(selectedFiles);
+              alertPayload.evidenceMedia = evidenceUrls;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/sos-alerts`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(alertPayload),
+            });
+
+            if (!response.ok) {
+              const errorPayload = await response.json().catch(() => ({}));
+              throw new Error(errorPayload.detail || `Request failed with status ${response.status}`);
+            }
+
+            // Show help status countdown
+            showHelpStatus();
+
+            showNotification("🚨 SOS alert sent successfully! Help is on the way.", "success");
+            e.target.reset();
+          } catch (error) {
+            console.error("Error sending SOS:", error);
+            const fallbackPayload = {
+              name: (document.getElementById("nameInput").value.trim() || "Anonymous"),
+              location: document.getElementById("locationInput").value,
+              type: document.getElementById("typeInput").value,
+              details: document.getElementById("detailsInput").value.trim(),
+              peopleCount: document.getElementById("peopleInput").value,
+              medicalInfo: {
+                injury: document.querySelector('input[name="injury"]:checked')?.value || "none",
+                conditions: Array.from(document.querySelectorAll('input[name="condition"]:checked')).map(cb => cb.value),
+                allergies: document.getElementById("allergiesInput").value.trim()
+              },
+              evidenceMedia: [],
+              timestamp: new Date().toISOString(),
+            };
+            offlineQueue.push(fallbackPayload);
+            localStorage.setItem('sosOfflineQueue', JSON.stringify(offlineQueue));
+            updateQueueStatus();
+            showNotification("Network error. SOS queued and will retry automatically.", "error");
+          }
+        });
+
+      // ========== HELP STATUS / COUNTDOWN TIMER ==========
+      function showHelpStatus() {
+        const helpStatus = document.getElementById('helpStatus');
+        helpStatus.classList.remove('hidden');
+        
+        let progress = 0;
+        let eta = 300; // 5 minutes in seconds
+        
+        const progressBar = document.getElementById('progressBar');
+        const etaCountdown = document.getElementById('etaCountdown');
+        
+        const interval = setInterval(() => {
+          progress += 1;
+          eta -= 1;
+          
+          const percentage = (progress / 300) * 100;
+          progressBar.style.width = percentage + '%';
+          
+          const mins = Math.floor(eta / 60);
+          const secs = eta % 60;
+          etaCountdown.textContent = `~${mins}:${secs.toString().padStart(2, '0')}`;
+          
+          if (progress >= 300) {
+            clearInterval(interval);
+            etaCountdown.textContent = 'Arriving soon!';
+            progressBar.style.width = '100%';
+          }
+        }, 1000);
+      }
+
+      // ========== OFFLINE QUEUE MANAGEMENT ==========
+      let offlineQueue = JSON.parse(localStorage.getItem('sosOfflineQueue')) || [];
+      
+      function updateQueueStatus() {
+        const queueCounter = document.getElementById('queueCounter');
+        const queueStatus = document.getElementById('queueStatus');
+        
+        if (offlineQueue.length > 0) {
+          queueCounter.classList.remove('hidden');
+          queueCounter.textContent = `${offlineQueue.length} pending`;
+          queueStatus.classList.remove('hidden');
+        } else {
+          queueCounter.classList.add('hidden');
+          queueStatus.classList.add('hidden');
+        }
+      }
+
+      async function processOfflineQueue() {
+        if (offlineQueue.length === 0) return;
+        if (isOfflineMode()) {
+          showNotification('Offline mode active. Disable test mode or reconnect to send queued alerts.', 'info');
+          return;
+        }
+        
+        const retryProgress = document.getElementById('retryProgress');
+        retryProgress.style.width = '50%';
+        
+        try {
+          for (let i = 0; i < offlineQueue.length; i++) {
+            const alert = offlineQueue[i];
+            const response = await fetch(`${API_BASE_URL}/sos-alerts`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(alert),
+            });
+            if (!response.ok) {
+              const errorPayload = await response.json().catch(() => ({}));
+              throw new Error(errorPayload.detail || `Request failed with status ${response.status}`);
+            }
+          }
+          
+          retryProgress.style.width = '100%';
+          setTimeout(() => {
+            offlineQueue = [];
+            localStorage.setItem('sosOfflineQueue', JSON.stringify(offlineQueue));
+            updateQueueStatus();
+            alert('✅ All pending alerts sent successfully!');
+            retryProgress.style.width = '0%';
+          }, 500);
+        } catch (error) {
+          retryProgress.style.width = '0%';
+          alert('❌ Failed to send alerts. Will retry automatically.');
+        }
+      }
+
+      document.getElementById('manualRetry')?.addEventListener('click', processOfflineQueue);
+
+      // Auto-retry when online
+      window.addEventListener('online', () => {
+        if (!forceOfflineMode) {
+          processOfflineQueue();
+        }
+      });
+
+      updateQueueStatus();
+
+      // Battery Monitoring
+      if ('getBattery' in navigator) {
+        navigator.getBattery().then(battery => {
+          function updateBatteryStatus() {
+            const level = Math.floor(battery.level * 100);
+            const batteryLevelEl = document.getElementById('batteryLevel');
+            const batteryIconEl = document.getElementById('batteryIcon');
+            
+            batteryLevelEl.textContent = level + '%';
+            
+            if (level <= 20) {
+              batteryLevelEl.classList.remove('text-green-500');
+              batteryLevelEl.classList.add('text-red-500');
+              batteryIconEl.classList.remove('text-green-500');
+              batteryIconEl.classList.add('text-red-500');
+              batteryIconEl.setAttribute('data-feather', 'battery');
+            } else if (level <= 50) {
+              batteryLevelEl.classList.remove('text-green-500', 'text-red-500');
+              batteryLevelEl.classList.add('text-yellow-500');
+              batteryIconEl.classList.remove('text-green-500', 'text-red-500');
+              batteryIconEl.classList.add('text-yellow-500');
+            }
+            feather.replace();
+          }
+          
+          updateBatteryStatus();
+          battery.addEventListener('levelchange', updateBatteryStatus);
+          battery.addEventListener('chargingchange', updateBatteryStatus);
+        });
+      } else {
+        document.getElementById('batteryLevel').textContent = 'N/A';
+      }
+
+      // Battery Saver Mode
+      document.getElementById('batterySaver').addEventListener('click', function() {
+        document.body.classList.toggle('power-saver');
+        if (document.body.classList.contains('power-saver')) {
+          this.textContent = 'Disable Power Saver';
+          showNotification('Power Saver Mode enabled - animations disabled', 'info');
+        } else {
+          this.textContent = 'Enable Power Saver';
+          showNotification('Power Saver Mode disabled', 'info');
+        }
+      });
+
+      // Share Location via SMS
+      document.getElementById('shareLoc').addEventListener('click', () => {
+        const location = document.getElementById('locationInput').value;
+        if (!emergencyContacts.length) {
+          showNotification('Add at least one emergency contact first', 'error');
+          return;
+        }
+        if (location && location !== 'Detecting location...') {
+          const contacts = emergencyContacts.map(c => c.phone).join(',');
+          const message = `🚨 EMERGENCY! I need help at: ${location}. Please send assistance immediately!`;
+          const smsUrl = `sms:${contacts}?body=${encodeURIComponent(message)}`;
+          window.location.href = smsUrl;
+          showNotification(`Sending SOS to ${emergencyContacts.length} contacts`, 'success');
+        } else {
+          showNotification('Please wait for location detection or select manually on map', 'error');
+        }
+      });
+
+      // Voice Recording
+      let mediaRecorder;
+      let audioChunks = [];
+      let recordingInterval;
+      let recordingSeconds = 0;
+
+      document.getElementById('recordBtn').addEventListener('click', async () => {
+        const recordBtn = document.getElementById('recordBtn');
+        const recordBtnText = document.getElementById('recordBtnText');
+        const recordingTime = document.getElementById('recordingTime');
+
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            recordingSeconds = 0;
+
+            mediaRecorder.ondataavailable = (event) => {
+              audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+              console.log('Voice recording saved:', audioBlob);
+              // You can upload this to Firebase Storage or attach to the alert
+            };
+
+            mediaRecorder.start();
+            recordBtnText.textContent = 'Stop Recording';
+            recordBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            recordBtn.classList.add('bg-red-600', 'hover:bg-red-700', 'animate-pulse');
+            recordingTime.classList.remove('hidden');
+            showNotification('🎤 Recording started', 'info');
+
+            recordingInterval = setInterval(() => {
+              recordingSeconds++;
+              const mins = Math.floor(recordingSeconds / 60);
+              const secs = recordingSeconds % 60;
+              recordingTime.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+
+          } catch (err) {
+            showNotification('Microphone access denied. Please enable microphone permissions.', 'error');
+          }
+        } else {
+          mediaRecorder.stop();
+          mediaRecorder.stream.getTracks().forEach(track => track.stop());
+          recordBtnText.textContent = 'Start Recording';
+          recordBtn.classList.remove('bg-red-600', 'hover:bg-red-700', 'animate-pulse');
+          recordBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+          recordingTime.classList.add('hidden');
+          clearInterval(recordingInterval);
+          showNotification('✅ Voice recording saved', 'success');
+        }
+      });
+
+      // File Upload
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const filePreview = document.getElementById('filePreview');
+
+      uploadArea.addEventListener('click', () => fileInput.click());
+
+      fileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        filePreview.innerHTML = '';
+        
+        files.forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const preview = document.createElement('div');
+            preview.className = 'relative group';
+            
+            if (file.type.startsWith('image/')) {
+              preview.innerHTML = `
+                <img src="${e.target.result}" class="w-full h-24 object-cover rounded-lg">
+                <button class="media-remove-btn absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <i data-feather="x" class="w-3 h-3"></i>
+                </button>
+              `;
+            } else {
+              preview.innerHTML = `
+                <div class="w-full h-24 bg-white/5 rounded-lg flex items-center justify-center">
+                  <i data-feather="film" class="w-8 h-8"></i>
+                </div>
+              `;
+            }
+            
+            filePreview.appendChild(preview);
+            feather.replace();
+            
+            // Event delegation for media remove button
+            preview.querySelector('.media-remove-btn')?.addEventListener('click', function() {
+              this.parentElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      // Drag and drop
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('border-white');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('border-white');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('border-white');
+        fileInput.files = e.dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change'));
+      });
+    </script>
+
+    <!-- Chatbot Embed -->
+    <script src="https://www.noupe.com/embed/0199cc5a78967a5e8e7d90d4bec06d4f5e41.js"></script>
+    <script src="./js/chat-widget-theme.js"></script>
+    <script src="./js/lang-switcher.js"></script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Person Reports List | ResQlink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A] text-white">
+    <div class="emergency-alert-banner">
+      <div class="alert-pulse-icon"></div>
+      <div class="alert-ticker" id="warningTicker">
+        <div class="alert-track static" id="warningTrack">
+          <span class="alert-item">All users can view missing and found records. Delete requires admin login.</span>
+        </div>
+      </div>
+      <a href="./index.html" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-xs font-bold transition-colors">BACK TO HOME</a>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-bold">Missing & Found Reports</h1>
+          <p class="text-gray-400 mt-2">Live list of submitted records for all users. Admin users can delete reports.</p>
+        </div>
+        <div class="flex gap-2">
+          <a href="./missing-person.html" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm">Open Forms</a>
+          <button id="refreshListsBtn" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-sm font-semibold">Refresh</button>
+        </div>
+      </div>
+
+      <section class="grid lg:grid-cols-2 gap-6">
+        <article id="missing" class="glass-panel p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-red-300">Missing Person Reports</h2>
+            <span id="missingCount" class="text-xs px-2 py-1 rounded bg-white/10">0</span>
+          </div>
+          <div id="missingList" class="space-y-3"></div>
+        </article>
+
+        <article id="found" class="glass-panel p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-blue-300">Found/Suspicion Reports</h2>
+            <span id="foundCount" class="text-xs px-2 py-1 rounded bg-white/10">0</span>
+          </div>
+          <div id="foundList" class="space-y-3"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="./js/notifications.js"></script>
+    <script src="./js/person-reports.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+insightface
+onnxruntime
+opencv-python-headless
+numpy
+requests
+python-dotenv

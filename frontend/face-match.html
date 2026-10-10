@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResQlink | Face Match Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A] text-white">
+    <div class="emergency-alert-banner">
+      <div class="alert-pulse-icon"></div>
+      <div class="alert-ticker" id="warningTicker">
+        <div class="alert-track static" id="warningTrack">
+          <span class="alert-item">Run targeted matching for missing and found person reports.</span>
+        </div>
+      </div>
+      <a href="./protocols.html" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-xs font-bold transition-colors">VIEW PROTOCOLS</a>
+    </div>
+
+    <header class="nav-desktop-header sticky top-0 z-[60] bg-[#0A0A0A]/95 backdrop-blur-md px-4 py-4 md:py-6 border-b border-[#333333]">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+        <a href="./index.html" class="text-2xl font-medium shrink-0">ResQlink</a>
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end flex-1">
+          <a href="./admin-dashboard.html" class="bg-white/10 border border-white/20 text-white px-3 md:px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-white/20 transition">
+            <i data-feather="activity" class="w-4 h-4"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="./missing-person.html" class="bg-blue-600 text-white px-3 md:px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-blue-700 transition">
+            <i data-feather="user-plus" class="w-4 h-4"></i>
+            <span>Reports</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-medium mb-4">Face Match Console</h1>
+      <p class="text-sm text-gray-400 mb-8">Dedicated page for missing person dropdown selection and match run controls.</p>
+
+      <section id="matchFoundBroadcast" class="hidden mb-8 p-5 rounded-2xl border border-green-500/40 bg-green-600/10">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-green-300 mb-1">Person Found</p>
+            <h2 id="broadcastTitle" class="text-xl font-bold">Match Found</h2>
+            <p id="broadcastBody" class="text-sm text-gray-200 mt-2"></p>
+          </div>
+          <span id="broadcastScore" class="text-xs px-3 py-1 rounded-full bg-green-600/20 text-green-300">score 0.00</span>
+        </div>
+      </section>
+
+      <section class="glass-panel p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-xl font-bold">Targeted Match Run</h2>
+            <p class="text-sm text-gray-400">Select one missing person and run matching against found/suspected reports.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="runPersonMatch" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-sm font-semibold">Run Match (All)</button>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-4 mb-4">
+          <div class="lg:col-span-2">
+            <label for="missingPersonSelect" class="block text-sm text-gray-400 mb-2">Find Missing Person</label>
+            <select id="missingPersonSelect" class="dark-select w-full bg-white/5 border border-white/10 px-4 py-3 rounded-xl text-sm">
+              <option value="">Select missing person</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button id="runSelectedPersonMatch" class="w-full px-4 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-sm font-semibold">Match Faces</button>
+          </div>
+        </div>
+
+        <div id="selectedMissingPreview" class="hidden p-4 bg-black/30 border border-white/10 rounded-xl mb-4"></div>
+        <div id="adminMatchResults" class="space-y-3"></div>
+      </section>
+    </main>
+
+    <script src="./js/notifications.js"></script>
+    <script src="./js/face-match.js"></script>
+  </body>
+</html>

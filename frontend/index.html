@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResQlink | Every Second Counts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+    <link rel="stylesheet" href="./css/lang-switcher.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A]">
+    <!-- Global Emergency Alert Banner -->
+    <div class="emergency-alert-banner">
+      <div class="alert-pulse-icon"></div>
+      <div class="alert-ticker" id="warningTicker">
+        <div class="alert-track static" id="warningTrack">
+          <span class="alert-item">
+            Cyclone Warning: Immediate evacuation ordered for coastal Sector 7 and 9. Stay away from low-lying areas.
+          </span>
+        </div>
+      </div>
+      <a
+        href="./protocols.html"
+        class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-xs font-bold transition-colors"
+        data-i18n="viewProtocols"
+        >VIEW PROTOCOLS</a
+      >
+    </div>
+
+    <!-- Vanta.js Background -->
+    <div id="vanta-bg" class="fixed inset-0 -z-10 opacity-20"></div>
+
+    <!-- Mobile Top Navigation Bar (Sticky) -->
+    <nav class="nav-bottom-bar">
+      <a href="./index.html" class="nav-item-mobile active">
+        <i data-feather="home"></i>
+        <span data-i18n="navHome">Home</span>
+      </a>
+      <a href="./dashboard.html" class="nav-item-mobile">
+        <i data-feather="activity"></i>
+        <span data-i18n="navDash">Dash</span>
+      </a>
+      <a href="./shelter-admin.html" class="nav-item-mobile admin-only-nav hidden">
+        <i data-feather="home"></i>
+        <span>Shelter</span>
+      </a>
+      <a href="./match-center.html" class="nav-item-mobile admin-only-nav hidden">
+        <i data-feather="search"></i>
+        <span>Match</span>
+      </a>
+      <a href="./sos.html" class="nav-item-mobile danger">
+        <i data-feather="alert-circle"></i>
+        <span data-i18n="navSOS">SOS</span>
+      </a>
+      <a href="./helpline.html" class="nav-item-mobile">
+        <i data-feather="phone"></i>
+        <span data-i18n="navHelp">Help</span>
+      </a>
+      <a href="./map.html" class="nav-item-mobile">
+        <i data-feather="map"></i>
+        <span data-i18n="navMap">Map</span>
+      </a>
+      <a href="./protocols.html" class="nav-item-mobile">
+        <i data-feather="shield"></i>
+        <span data-i18n="navTips">Tips</span>
+      </a>
+    </nav>
+
+    <!-- Desktop Header (Hidden on Mobile via core-responsive.css) -->
+    <header class="nav-desktop-header sticky top-0 z-[60] bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/5 px-6 py-4 transition-all duration-300">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="./index.html" class="text-xl font-bold tracking-tighter" data-i18n="appName">ResQlink</a>
+        <div class="flex items-center gap-6">
+          <nav class="hidden md:flex items-center gap-6">
+            <a
+              href="./helpline.html"
+              class="bg-red-600/20 text-red-500 border border-red-500/30 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 hover:bg-red-600 hover:text-white transition group"
+            >
+              <i data-feather="phone" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i>
+              <span data-i18n="navHelplines">Helplines</span>
+            </a>
+            <a
+              href="./match-center.html"
+              class="admin-only-nav hidden bg-green-600/20 text-green-300 border border-green-500/40 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 hover:bg-green-600 hover:text-white transition group"
+            >
+              <i data-feather="search" class="w-4 h-4"></i>
+              <span>Match Center</span>
+            </a>
+            <a
+              href="./shelter-admin.html"
+              class="admin-only-nav hidden bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 hover:bg-emerald-600 hover:text-white transition group"
+            >
+              <i data-feather="home" class="w-4 h-4"></i>
+              <span>Shelter Admin</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-screen flex items-center justify-center overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 hero-bg-image opacity-35"
+      ></div>
+      <div class="map-overlay absolute inset-0"></div>
+
+      <div class="relative z-10 text-center px-4 max-w-7xl mx-auto">
+        <h1
+          class="hero-title hero-massive font-light mb-12 tracking-tight leading-[0.9]"
+        >
+          <span class="block text-white/90 mb-8 animate-fade-in">Every</span>
+          <span class="block font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent animate-fade-in-delay"
+            >Second Counts</span
+          >
+        </h1>
+        <p
+          class="hero-subtext text-gray-300 mb-14 max-w-5xl mx-auto leading-relaxed font-light"
+        >
+          Connect emergency responders with those in need through real-time
+          coordination
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="./sos.html"
+            class="bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg glow-hover transform hover:scale-105 active:scale-95 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] transition-all flex items-center gap-2"
+          >
+            <i data-feather="alert-triangle"></i>
+            <span >Send SOS</span>
+          </a>
+          <a
+            href="./dashboard.html"
+            class="bg-blue-600 text-white px-8 py-4 rounded-full font-medium text-lg glow-hover transform hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <i data-feather="activity"></i>
+            <span >Dashboard</span>
+          </a>
+          <a
+            id="admin-login-btn"
+            href="./admin-login.html"
+            class="border-2 border-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white hover:text-black transition-all flex items-center gap-2"
+          >
+            <i data-feather="shield"></i>
+            <span>Admin Login</span>
+          </a>
+          <a
+            id="admin-dashboard-btn"
+            href="./admin-dashboard.html"
+            class="hidden bg-green-600 text-white px-8 py-4 rounded-full font-medium text-lg glow-hover transform hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <i data-feather="user-check"></i>
+            <span >Admin Dashboard</span>
+          </a>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-4">
+          <a
+            href="./map.html"
+            class="px-5 py-3 rounded-full bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-400/30 text-sm font-semibold flex items-center justify-center gap-2"
+          >
+            <i data-feather="home"></i>
+            <span>Find Shelter</span>
+          </a>
+          <a
+            href="./match-center.html"
+            class="px-5 py-3 rounded-full bg-green-600/30 hover:bg-green-600/50 border border-green-400/30 text-sm font-semibold flex items-center justify-center gap-2"
+          >
+            <i data-feather="check-circle"></i>
+            <span>Match Found</span>
+          </a>
+          <a
+            href="./missing-person.html"
+            class="px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-sm font-semibold flex items-center justify-center gap-2"
+          >
+            <i data-feather="user-x"></i>
+            <span>Missing Person</span>
+          </a>
+          <a
+            href="./missing-person.html#found"
+            class="px-5 py-3 rounded-full bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/30 text-sm font-semibold flex items-center justify-center gap-2"
+          >
+            <i data-feather="search"></i>
+            <span>Found Person / Suspicion</span>
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 max-w-6xl mx-auto">
+      <h2
+        class="text-3xl font-medium mb-16 text-center"
+      >
+        Critical Functionalities
+      </h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- SOS System -->
+        <div
+          class="bg-[#1A1A1A] p-6 rounded-xl border border-[#333333] hover:border-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all group cursor-pointer"
+        >
+          <div
+            class="w-14 h-14 bg-[#333333] rounded-full flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors"
+          >
+            <i data-feather="alert-circle" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">
+            SOS System
+          </h3>
+          <p class="text-[#D3D3D3]">
+            This will notify all nearby responders of your exact location.
+          </p>
+        </div>
+
+        <!-- Map -->
+        <div
+          class="bg-[#1A1A1A] p-6 rounded-xl border border-[#333333] hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group cursor-pointer"
+        >
+          <div
+            class="w-14 h-14 bg-[#333333] rounded-full flex items-center justify-center mb-4 group-hover:bg-green-600 transition-colors"
+          >
+            <i data-feather="map" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">
+            Live Incident Map
+          </h3>
+          <p class="text-[#D3D3D3]">
+            Visualize emergencies and resources in real-time across affected
+            areas.
+          </p>
+        </div>
+
+        <!-- AI Assistant (Non-clickable) -->
+        <div
+          class="bg-[#1A1A1A] p-6 rounded-xl border border-[#333333] hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all group cursor-pointer"
+        >
+          <div
+            class="w-14 h-14 bg-[#333333] rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+          >
+            <i data-feather="message-square" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">
+            AI Assistant
+          </h3>
+          <p class="text-[#D3D3D3]">
+            Get critical information without internet using our NLP system.
+          </p>
+        </div>
+
+        <!-- Emergency Helplines -->
+        <a
+          href="./helpline.html"
+          class="bg-[#1A1A1A] p-6 rounded-xl border border-red-500/30 hover:border-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all group"
+        >
+          <div
+            class="w-14 h-14 bg-red-600/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors"
+          >
+            <i data-feather="phone-call" class="w-6 h-6 text-red-500"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Emergency Helplines</h3>
+          <p class="text-[#D3D3D3]">
+            Immediate access to critical emergency contacts and services.
+          </p>
+        </a>
+
+        <!-- Protocols -->
+        <a
+          href="./protocols.html"
+          class="urgent-pulse bg-[#1A1A1A] p-6 rounded-xl border border-[#333333] hover:border-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.2)] transition-all group"
+        >
+          <div
+            class="w-14 h-14 bg-[#333333] rounded-full flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors"
+          >
+            <i data-feather="shield" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">
+            Safety Protocols
+          </h3>
+          <p class="text-[#D3D3D3]">
+            Essential guidelines and step-by-step procedures for emergencies.
+          </p>
+        </a>
+
+        <!-- Admin Dashboard -->
+        <a
+          href="./dashboard.html"
+          class="bg-[#1A1A1A] p-6 rounded-xl border border-[#333333] hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all group"
+        >
+          <div
+            class="w-14 h-14 bg-[#333333] rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors"
+          >
+            <i data-feather="users" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">
+            Admin Dashboard
+          </h3>
+          <p class="text-[#D3D3D3]">
+            Access missions, training, and coordination tools for responders.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Emergency CTA -->
+    <section class="py-20 bg-[#1A1A1A] emergency-cta-image relative overflow-hidden">
+      <div class="absolute inset-0 bg-black/55"></div>
+      <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
+        <div class="p-8 bg-[#0A0A0A] rounded-xl border border-[#333333]">
+          <h2 class="text-3xl font-medium mb-6">
+            Need Immediate Help?
+          </h2>
+              <a
+                href="./helpline.html"
+                class="bg-red-600 text-white px-10 py-5 rounded-full font-bold text-xl glow-hover transform hover:scale-105 active:scale-95 hover:bg-red-700 hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] transition-all flex items-center justify-center gap-3 mx-auto"
+              >
+                <i data-feather="phone-call"></i>
+                <span >EMERGENCY HELPLINES</span>
+              </a>
+            </div>
+
+          <p class="mt-6 text-[#D3D3D3]">
+            This will notify all nearby responders of your exact location
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Updates Feed -->
+    <section class="py-20 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex items-center justify-between mb-10">
+          <h2 class="text-3xl font-medium">Critical Updates</h2>
+          <span class="status-badge status-safe">
+            <span class="alert-pulse-icon !bg-green-500"></span>
+            <span >Live Connection</span>
+          </span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="glass-panel p-6 border-l-4 border-blue-500">
+            <span class="text-xs text-blue-400 font-bold uppercase mb-2 block"
+              >10 Minutes Ago • Weather Dept</span
+            >
+            <h4 class="text-xl font-medium mb-3">
+              Thunderstorm Warning issued for North District
+            </h4>
+            <p class="text-gray-400 text-sm">
+              Responders are on standby. Avoid travel near the riverside regions
+              for the next 4 hours.
+            </p>
+          </div>
+          <div class="glass-panel p-6 border-l-4 border-green-500">
+            <span class="text-xs text-green-400 font-bold uppercase mb-2 block"
+              >1 Hour Ago • Health Auth</span
+            >
+            <h4 class="text-xl font-medium mb-3">
+              Mobile Medical Unit deployed to Sector 4
+            </h4>
+            <p class="text-gray-400 text-sm">
+              Emergency health services available for senior citizens in the
+              refugee camp area. Open 24/7.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Standard Footer -->
+    <footer class="pt-20 pb-10 px-4 border-t border-white/5 bg-[#050505] relative z-50">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <!-- Col 1: Brand -->
+          <div class="space-y-6">
+            <h3 class="text-2xl font-bold bg-gradient-to-r from-white to-white/40 bg-clip-text text-transparent">ResQlink</h3>
+            <p class="text-gray-400 leading-relaxed text-sm">Empowering communities with real-time disaster relief coordination and life-saving communication tools.</p>
+            <div class="flex gap-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-blue-400 transition-all border border-white/10 group">
+                <i data-feather="facebook" class="w-5 h-5 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-cyan-400 transition-all border border-white/10 group">
+                <i data-feather="x" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:text-pink-400 transition-all border border-white/10 group">
+                <i data-feather="instagram" class="w-5 h-5 group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Col 2: Platform -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Platform</h4>
+            <ul class="space-y-4 text-sm">
+              <li><a href="./map.html" class="text-gray-400 hover:text-white transition-colors">Live Incident Map</a></li>
+              <li><a href="./sos.html" class="text-gray-400 hover:text-white transition-colors">SOS System</a></li>
+              <li><a href="./dashboard.html" class="text-gray-400 hover:text-white transition-colors">Response Dashboard</a></li>
+            </ul>
+          </div>
+          <!-- Col 3: Resources -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Resources</h4>
+            <ul class="space-y-4 text-sm">
+              <li><a href="./protocols.html" class="text-gray-400 hover:text-white transition-colors">Safety Protocols</a></li>
+              <li><a href="./dashboard.html" class="text-gray-400 hover:text-white transition-colors">Admin Dashboard</a></li>
+              <li><a href="./helpline.html" class="text-red-500/80 hover:text-red-400 transition-colors font-medium">Emergency Helplines</a></li>
+            </ul>
+          </div>
+          <!-- Col 4: Reach Out -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-bold uppercase tracking-widest text-white/40">Newsletter</h4>
+            <p class="text-xs text-gray-500">Stay updated with the latest disaster response protocols and platform updates.</p>
+            <div class="flex gap-2">
+              <input type="email" id="newsletterEmail" placeholder="Email address" class="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-sm outline-none focus:border-white/20 w-full transition-all" />
+              <button id="newsletterBtn" class="bg-white text-black p-2 rounded-lg hover:bg-gray-200 transition-all flex-shrink-0"><i data-feather="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="mt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p class="text-xs text-gray-500" data-i18n="copyright">© 2026 ResQlink. Developed for Resilience.</p>
+          <div class="flex gap-8 text-xs text-gray-500">
+            <a href="#" class="hover:text-white transition-colors" data-i18n="privacyPolicy">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors" data-i18n="termsOfService">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors" data-i18n="contactSupport">Contact Support</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./js/lang-switcher.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/notifications.js"></script>
+    
+    <script>
+      // Newsletter subscription
+      document.getElementById('newsletterBtn')?.addEventListener('click', () => {
+        const email = document.getElementById('newsletterEmail').value.trim();
+        if (email && email.includes('@')) {
+          showNotification('✅ Successfully subscribed to newsletter!', 'success');
+          document.getElementById('newsletterEmail').value = '';
+        } else {
+          showNotification('Please enter a valid email address', 'error');
+        }
+      });
+    </script>
+
+    <!-- Chatbot Embed -->
+    <script src="https://www.noupe.com/embed/0199cc5a78967a5e8e7d90d4bec06d4f5e41.js"></script>
+    <script src="./js/chat-widget-theme.js"></script>
+  </body>
+</html>

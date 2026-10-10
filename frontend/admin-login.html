@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | ResQlink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
+    <main class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-blue-400 mb-2"><a href="./index.html">ResQlink</a></h1>
+        <p class="text-gray-400">Emergency Response Admin Dashboard</p>
+      </div>
+
+      <section class="rounded-2xl border border-white/10 bg-[#111111] p-8 shadow-[0_25px_60px_rgba(0,0,0,0.45)]">
+        <h2 class="text-3xl font-bold text-center mb-8">Admin Login</h2>
+
+        <form id="adminLoginForm" class="space-y-5" novalidate>
+          <div>
+            <label for="email" class="block text-sm font-medium mb-2 text-gray-200">Email</label>
+            <div class="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="username"
+                placeholder="admin@resqlink.com"
+                class="w-full rounded-xl border border-[#2B2B2B] bg-[#161616] px-4 py-3.5 pr-11 text-gray-100 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                required
+              />
+              <i data-feather="mail" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium mb-2 text-gray-200">Password</label>
+            <div class="relative">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Enter admin password"
+                class="w-full rounded-xl border border-[#2B2B2B] bg-[#161616] px-4 py-3.5 pr-24 text-gray-100 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                required
+              />
+              <button
+                id="togglePasswordBtn"
+                type="button"
+                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs text-gray-300 hover:bg-white/10"
+              >
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-sm">
+            <label class="inline-flex items-center gap-2 text-gray-300">
+              <input id="rememberMe" type="checkbox" class="h-4 w-4 rounded border-gray-600 bg-[#161616]" />
+              <span>Remember me</span>
+            </label>
+            <span class="text-blue-400">Admin only</span>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 py-3.5 font-semibold text-white transition hover:from-blue-500 hover:to-cyan-400"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div class="mt-6 rounded-xl border border-blue-500/30 bg-blue-900/20 p-4 text-sm text-blue-200">
+          <p class="font-semibold mb-1">Admin Credentials</p>
+          <p>Email: <span class="font-mono">admin@resqlink.com</span></p>
+          <p>Password: <span class="font-mono">ResQlink@2026</span></p>
+        </div>
+      </section>
+
+      <div class="mt-8 text-center text-xs text-gray-500">
+        <p>© 2026 ResQlink. All rights reserved.</p>
+        <p>Emergency Response Network</p>
+      </div>
+    </main>
+
+    <script src="./js/notifications.js"></script>
+    <script src="./js/admin-login.js"></script>
+  </body>
+</html>

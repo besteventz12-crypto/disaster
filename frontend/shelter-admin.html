@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResQlink | Shelter Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A] text-white">
+    <div class="emergency-alert-banner">
+      <div class="alert-pulse-icon"></div>
+      <div class="alert-ticker" id="warningTicker">
+        <div class="alert-track static" id="warningTrack">
+          <span class="alert-item">Admin Shelter Management</span>
+        </div>
+      </div>
+      <a href="./protocols.html" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-xs font-bold transition-colors">VIEW PROTOCOLS</a>
+    </div>
+
+    <nav class="nav-bottom-bar">
+      <a href="./index.html" class="nav-item-mobile">
+        <i data-feather="home"></i>
+        <span>Home</span>
+      </a>
+      <a href="./admin-dashboard.html" class="nav-item-mobile">
+        <i data-feather="activity"></i>
+        <span>Dash</span>
+      </a>
+      <a href="./shelter-admin.html" class="nav-item-mobile active">
+        <i data-feather="home"></i>
+        <span>Shelter</span>
+      </a>
+      <a href="./map.html" class="nav-item-mobile">
+        <i data-feather="map"></i>
+        <span>Map</span>
+      </a>
+      <a href="./match-center.html" class="nav-item-mobile">
+        <i data-feather="search"></i>
+        <span>Match</span>
+      </a>
+      <a href="./helpline.html" class="nav-item-mobile">
+        <i data-feather="phone"></i>
+        <span>Help</span>
+      </a>
+    </nav>
+
+    <header class="nav-desktop-header sticky top-0 z-[60] bg-[#0A0A0A]/95 backdrop-blur-md px-4 py-4 md:py-6 border-b border-[#333333]">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+        <a href="./index.html" class="text-2xl font-medium shrink-0">ResQlink</a>
+        <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end flex-1">
+          <a href="./admin-dashboard.html" class="bg-white/10 border border-white/20 text-white px-3 md:px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-white/20 transition">
+            <i data-feather="activity" class="w-4 h-4"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="./map.html" class="bg-blue-600 text-white px-3 md:px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-blue-700 transition">
+            <i data-feather="map" class="w-4 h-4"></i>
+            <span>Map</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-bold">Shelter Admin</h1>
+          <p class="text-gray-400 mt-2">Dedicated page to add and manage shelters. Admin login required.</p>
+        </div>
+        <p id="adminStatePill" class="text-xs px-3 py-1 rounded-full bg-white/10 text-gray-300">Checking session...</p>
+      </div>
+
+      <section id="adminOnlyBlocked" class="hidden glass-panel p-6 mb-8 border border-red-500/30 bg-red-600/10">
+        <h2 class="text-xl font-bold text-red-300 mb-2">Admin Access Required</h2>
+        <p class="text-sm text-gray-300">Shelter management is visible only for logged-in admins.</p>
+        <a href="./admin-login.html" class="inline-flex mt-4 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-sm font-semibold">Go To Admin Login</a>
+      </section>
+
+      <div id="adminShelterContent" class="space-y-0">
+
+      <section class="glass-panel p-6 mb-8">
+        <h2 class="text-xl font-bold mb-4">Add Shelter</h2>
+        <form id="shelterForm" class="grid md:grid-cols-2 gap-4">
+          <input id="shelterName" type="text" placeholder="Shelter name" required class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <input id="shelterCapacity" type="number" min="0" placeholder="Capacity" class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <input id="shelterContact" type="text" placeholder="Contact phone" class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <input id="shelterAddress" type="text" placeholder="Address" class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <input id="shelterLat" type="number" step="0.000001" placeholder="Latitude" required class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <input id="shelterLng" type="number" step="0.000001" placeholder="Longitude" required class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl" />
+          <textarea id="shelterNotes" rows="2" placeholder="Notes" class="md:col-span-2 bg-white/5 border border-white/10 px-4 py-3 rounded-xl"></textarea>
+          <div class="md:col-span-2 flex flex-wrap gap-2">
+            <button id="useCurrentShelterLocation" type="button" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm">Use Current Location</button>
+            <button id="pickShelterOnMap" type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-sm">Select On Map</button>
+            <button type="submit" id="saveShelterBtn" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-sm font-semibold">Save Shelter</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="glass-panel p-6 mb-8">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <h2 class="text-xl font-bold">Pick Shelter Location On Map</h2>
+          <p id="mapPickState" class="text-xs px-3 py-1 rounded-full bg-white/10 text-gray-300">Map pick: OFF</p>
+        </div>
+        <p class="text-sm text-gray-400 mb-4">Turn on "Select On Map", then click a point on the map to auto-fill latitude and longitude.</p>
+        <div id="shelterSelectMap" class="w-full h-[320px] rounded-xl border border-white/10"></div>
+      </section>
+
+      <section class="glass-panel p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">All Shelters</h2>
+          <button id="refreshShelterList" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm">Refresh</button>
+        </div>
+        <div id="shelterList" class="space-y-3"></div>
+      </section>
+      </div>
+    </main>
+
+    <script src="./js/notifications.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./js/shelter-admin.js"></script>
+  </body>
+</html>

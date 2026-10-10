@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+spacy
+pymongo
+python-dotenv
+cloudinary
+python-multipart
+PyJWT
+requests

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResQlink | SOS Alert Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="icon" href="./Material/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/globals.css" />
+    <link rel="stylesheet" href="./css/core-responsive.css" />
+    <link rel="stylesheet" href="./css/notifications.css" />
+  </head>
+  <body class="min-h-screen bg-[#0A0A0A] text-white">
+    <header class="nav-desktop-header sticky top-0 z-[60] bg-[#0A0A0A]/95 backdrop-blur-md px-4 py-4 border-b border-[#333333]">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+        <a href="./dashboard.html" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm">
+          <i data-feather="arrow-left" class="w-4 h-4"></i>
+          <span>Back to Dashboard</span>
+        </a>
+        <a href="./index.html" class="text-xl font-semibold">ResQlink</a>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-2">SOS Alert Details</h1>
+      <p id="alertMeta" class="text-sm text-gray-400 mb-6">Loading...</p>
+
+      <section id="detailsCard" class="glass-panel p-6 hidden">
+        <div class="grid md:grid-cols-2 gap-4 text-sm mb-5">
+          <div class="p-4 rounded-lg bg-black/30 border border-white/10">
+            <p><strong>Name:</strong> <span id="detailName">-</span></p>
+            <p><strong>Type:</strong> <span id="detailType">-</span></p>
+            <p><strong>People Affected:</strong> <span id="detailPeople">-</span></p>
+            <p><strong>Location:</strong> <span id="detailLocation">-</span></p>
+          </div>
+          <div class="p-4 rounded-lg bg-black/30 border border-white/10">
+            <p><strong>Submitted:</strong> <span id="detailTimestamp">-</span></p>
+            <p><strong>Injury:</strong> <span id="detailInjury">-</span></p>
+            <p><strong>Conditions:</strong> <span id="detailConditions">-</span></p>
+            <p><strong>Allergies:</strong> <span id="detailAllergies">-</span></p>
+          </div>
+        </div>
+
+        <div class="mb-5 p-4 rounded-lg bg-black/30 border border-white/10">
+          <p class="text-xs uppercase tracking-wide text-gray-400 mb-2">Additional Details</p>
+          <p id="detailNotes" class="text-gray-200 text-sm">-</p>
+        </div>
+
+        <div class="p-4 rounded-lg bg-black/30 border border-white/10">
+          <p class="text-xs uppercase tracking-wide text-gray-400 mb-3">Evidence Media</p>
+          <div id="evidenceMediaGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+      </section>
+
+      <section id="emptyState" class="glass-panel p-6 text-sm text-gray-300 hidden">
+        Unable to load SOS alert details.
+      </section>
+    </main>
+
+    <script src="./js/notifications.js"></script>
+    <script src="./js/sos-alert.js"></script>
+  </body>
+</html>
