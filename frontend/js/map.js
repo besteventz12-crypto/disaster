@@ -1,6 +1,6 @@
 feather.replace();
 
-const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "http://localhost:5000";
+const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "https://backend-production-6882.up.railway.app";
 const ADMIN_TOKEN_KEY = "crisisMitraAdminToken";
 
 const map = L.map("map").setView([20.5937, 78.9629], 5);

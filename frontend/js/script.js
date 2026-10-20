@@ -13,7 +13,7 @@ if (window.VANTA?.NET) {
 // Feather icons
 feather.replace();
 
-const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "http://localhost:5000";
+const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "https://backend-production-6882.up.railway.app";
 const WARNING_STORAGE_KEY = "adminWarnings";
 const DEFAULT_WARNING = "Cyclone Warning: Immediate evacuation ordered for coastal Sector 7 and 9. Stay away from low-lying areas.";
 const ADMIN_TOKEN_KEY = "crisisMitraAdminToken";

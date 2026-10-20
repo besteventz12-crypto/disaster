@@ -1,6 +1,6 @@
 feather.replace();
 
-const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "http://localhost:5000";
+const API_BASE_URL = localStorage.getItem("crisisMitraApiBase") || "https://backend-production-6882.up.railway.app";
 const WARNING_STORAGE_KEY = "adminWarnings";
 const DEFAULT_WARNING = "Run targeted matching for missing and found person reports.";
 const ADMIN_TOKEN_KEY = "crisisMitraAdminToken";
