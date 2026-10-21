@@ -277,20 +277,18 @@ async function ensureCloudinaryPhotoUrl({ fileId, urlId, statusId }) {
     return existingUrl;
   }
 
-  if (existingUrl) {
-    return existingUrl;
+  const selectedFileSignature = `${selectedFile.name}:${selectedFile.size}:${selectedFile.lastModified}`;
+  const uploadedFileSignature = urlInput?.dataset?.uploadedFileSignature || "";
+
+  if (!existingUrl) {
+    throw new Error("Please click Upload Photo first, then submit. If upload failed, re-upload a clear human face photo.");
   }
 
-  try {
-    const uploadedUrl = await uploadAndValidateHumanPhoto(selectedFile, statusEl);
-    if (urlInput) urlInput.value = uploadedUrl;
-    return uploadedUrl;
-  } catch (err) {
-    const code = err instanceof Error ? err.message : "NO_FACE_DETECTED";
-    if (statusEl) statusEl.textContent = "Upload rejected";
-    if (urlInput) urlInput.value = "";
-    throw new Error(humanFaceValidationMessage(code));
+  if (uploadedFileSignature && uploadedFileSignature !== selectedFileSignature) {
+    throw new Error("Selected image was changed after upload. Please click Upload Photo again to re-upload.");
   }
+
+  return existingUrl;
 }
 
 function setupPhotoUpload(uploadBtnId, fileId, urlId, statusId) {
@@ -310,13 +308,19 @@ function setupPhotoUpload(uploadBtnId, fileId, urlId, statusId) {
     uploadBtn.textContent = "Uploading...";
     try {
       const url = await uploadAndValidateHumanPhoto(file, statusEl);
-      if (urlInput) urlInput.value = url;
+      if (urlInput) {
+        urlInput.value = url;
+        urlInput.dataset.uploadedFileSignature = `${file.name}:${file.size}:${file.lastModified}`;
+      }
       notify("Image uploaded and human face verified", "success");
     } catch (err) {
       const code = err instanceof Error ? err.message : "NO_FACE_DETECTED";
       const message = humanFaceValidationMessage(code);
       if (statusEl) statusEl.textContent = "Upload rejected";
-      if (urlInput) urlInput.value = "";
+      if (urlInput) {
+        urlInput.value = "";
+        delete urlInput.dataset.uploadedFileSignature;
+      }
       notify(message, "error");
     } finally {
       uploadBtn.disabled = false;
@@ -386,6 +390,8 @@ function setupMissingForm() {
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       form.reset();
+      const urlEl = document.getElementById("missingPhotoUrl");
+      if (urlEl?.dataset) delete urlEl.dataset.uploadedFileSignature;
       const statusEl = document.getElementById("missingPhotoStatus");
       if (statusEl) statusEl.textContent = "No photo uploaded";
       notify("Missing person report submitted", "success");
@@ -434,6 +440,8 @@ function setupFoundForm() {
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       form.reset();
+      const urlEl = document.getElementById("foundPhotoUrl");
+      if (urlEl?.dataset) delete urlEl.dataset.uploadedFileSignature;
       const statusEl = document.getElementById("foundPhotoStatus");
       if (statusEl) statusEl.textContent = "No photo uploaded";
       notify("Found/Suspicion report submitted", "success");
