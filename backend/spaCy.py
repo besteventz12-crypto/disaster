@@ -560,6 +560,10 @@ def _build_match_features(missing, found):
         face_similarity = _cosine_similarity_vectors(missing_embedding, found_embedding)
         face_available = True
 
+    missing_has_photo = bool(str(missing.get("photoUrl") or "").strip())
+    found_has_photo = bool(str(found.get("photoUrl") or "").strip())
+    photo_pair_without_face = missing_has_photo and found_has_photo and (not face_available)
+
     return {
         "age_diff": age_diff,
         "clothing_sim": clothing_sim,
@@ -569,6 +573,7 @@ def _build_match_features(missing, found):
         "missing_data_penalty": missing_penalty,
         "face_similarity": face_similarity,
         "face_available": face_available,
+        "photo_pair_without_face": photo_pair_without_face,
     }
 
 
@@ -589,6 +594,11 @@ def _score_from_features(features):
         combined = (1.0 - FACE_MATCH_WEIGHT) * rules_score + FACE_MATCH_WEIGHT * float(features.get("face_similarity", 0.0))
     else:
         combined = rules_score
+
+    # If both sides have photos but no face could be extracted, penalize score to reduce false positives from random images.
+    if features.get("photo_pair_without_face"):
+        combined *= 0.45
+
     return max(0.0, min(1.0, combined))
 
 

@@ -61,6 +61,11 @@ function toNumberOrNull(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function formatScoreOutOfTen(value) {
+  const normalized = Math.max(0, Math.min(1, Number(value) || 0));
+  return `${(normalized * 10).toFixed(1)} out of 10`;
+}
+
 function toDateTimeLocalString(date) {
   const pad = (num) => String(num).padStart(2, "0");
   const yyyy = date.getFullYear();
@@ -400,7 +405,8 @@ function renderPublicMatches(matches) {
   container.innerHTML = matches
     .slice(0, 10)
     .map((item) => {
-      const score = Number(item.score || 0).toFixed(2);
+      const score = formatScoreOutOfTen(item.score);
+      const faceAvailable = Boolean(item?.ai?.faceAvailable);
       const missingName = item?.missing?.personName || "Unknown";
       const foundName = item?.found?.personName || "Unknown";
       const missingContact = item?.missing?.contact || {};
@@ -411,6 +417,7 @@ function renderPublicMatches(matches) {
             <h3 class="font-bold text-green-300">Match Found</h3>
             <span class="text-xs px-2 py-1 rounded bg-green-600/20 text-green-300">score ${score}</span>
           </div>
+          <p class="text-xs text-gray-400 mb-2">${faceAvailable ? "AI face scoring available for this pair." : "No clear face detected in one or both images. Rule-based score only."}</p>
           <p class="text-sm"><strong>Missing:</strong> ${missingName}</p>
           <p class="text-sm mb-3"><strong>Found/Suspected:</strong> ${foundName}</p>
           <div class="grid md:grid-cols-2 gap-3 text-sm">

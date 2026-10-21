@@ -17,6 +17,11 @@ let warningsCache = readJson(STORAGE_KEYS.warnings, [DEFAULT_WARNING]);
 let missingReportsCache = [];
 let isAdminSession = false;
 
+function formatScoreOutOfTen(value) {
+  const normalized = Math.max(0, Math.min(1, Number(value) || 0));
+  return `${(normalized * 10).toFixed(1)} out of 10`;
+}
+
 function getAdminToken() {
   return localStorage.getItem(ADMIN_TOKEN_KEY) || "";
 }
@@ -548,7 +553,8 @@ function renderAdminMatches(matches) {
 
   container.innerHTML = matches
     .map((item) => {
-      const score = Number(item.score || 0).toFixed(2);
+      const score = formatScoreOutOfTen(item.score);
+      const faceAvailable = Boolean(item?.ai?.faceAvailable);
       const missingName = item?.missing?.personName || "Unknown";
       const foundName = item?.found?.personName || "Unknown";
       const missingPhoto = item?.missing?.photoUrl || "";
@@ -561,6 +567,7 @@ function renderAdminMatches(matches) {
             <h4 class="font-bold text-green-300">Match Found</h4>
             <span class="text-xs px-2 py-1 rounded bg-green-600/20 text-green-300">score ${score}</span>
           </div>
+          <p class="text-xs text-gray-400 mb-2">${faceAvailable ? "AI face scoring available for this pair." : "No clear face detected in one or both images. Rule-based score only."}</p>
           <p class="text-sm mb-2"><strong>Missing:</strong> ${missingName}</p>
           <p class="text-sm mb-2"><strong>Found/Suspected:</strong> ${foundName}</p>
           <div class="grid md:grid-cols-2 gap-3 mt-2 mb-3">
@@ -603,14 +610,17 @@ function renderMatchBroadcast(match) {
     return;
   }
 
-  const score = Number(match.score || 0).toFixed(2);
+  const score = formatScoreOutOfTen(match.score);
+  const faceAvailable = Boolean(match?.ai?.faceAvailable);
   const missingName = match?.missing?.personName || "Unknown";
   const foundName = match?.found?.personName || "Unknown";
   const contactName = match?.found?.contact?.name || match?.missing?.contact?.name || "N/A";
   const contactPhone = match?.found?.contact?.phone || match?.missing?.contact?.phone || "N/A";
 
   titleEl.textContent = `Match Found: ${missingName} ↔ ${foundName}`;
-  bodyEl.textContent = `Person found. Contact ${contactName} at ${contactPhone}.`;
+  bodyEl.textContent = faceAvailable
+    ? `Person found. Contact ${contactName} at ${contactPhone}. AI face signal was used.`
+    : `Person found. Contact ${contactName} at ${contactPhone}. No clear face detected, so rule-based scoring was used.`;
   scoreEl.textContent = `score ${score}`;
   banner.classList.remove("hidden");
 }
