@@ -8,7 +8,50 @@ function notify(message, type = "info") {
     window.showNotification(message, type);
     return;
   }
-  alert(message);
+
+  const popup = document.createElement("div");
+  popup.textContent = String(message || "");
+  popup.style.position = "fixed";
+  popup.style.right = "16px";
+  popup.style.top = "16px";
+  popup.style.zIndex = "9999";
+  popup.style.maxWidth = "380px";
+  popup.style.padding = "10px 14px";
+  popup.style.borderRadius = "10px";
+  popup.style.fontSize = "13px";
+  popup.style.fontWeight = "600";
+  popup.style.boxShadow = "0 8px 30px rgba(0,0,0,0.35)";
+  popup.style.border = "1px solid rgba(255,255,255,0.14)";
+
+  if (type === "success") {
+    popup.style.background = "#14532d";
+    popup.style.color = "#bbf7d0";
+  } else if (type === "error") {
+    popup.style.background = "#7f1d1d";
+    popup.style.color = "#fecaca";
+  } else {
+    popup.style.background = "#1f2937";
+    popup.style.color = "#e5e7eb";
+  }
+
+  document.body.appendChild(popup);
+  window.setTimeout(() => popup.remove(), 3600);
+}
+
+function setUploadStatus(statusEl, text, type = "info") {
+  if (!statusEl) return;
+  statusEl.textContent = text;
+  statusEl.classList.remove("text-gray-400", "text-green-400", "text-red-400", "text-blue-400");
+
+  if (type === "success") {
+    statusEl.classList.add("text-green-400");
+  } else if (type === "error") {
+    statusEl.classList.add("text-red-400");
+  } else if (type === "progress") {
+    statusEl.classList.add("text-blue-400");
+  } else {
+    statusEl.classList.add("text-gray-400");
+  }
 }
 
 function normalizeWarnings(warnings) {
@@ -255,13 +298,13 @@ async function validateUploadedPhotoHasFace(photoUrl) {
 }
 
 async function uploadAndValidateHumanPhoto(file, statusEl) {
-  if (statusEl) statusEl.textContent = "Uploading to Cloudinary...";
+  setUploadStatus(statusEl, "Uploading to Cloudinary...", "progress");
   const uploadedUrl = await uploadImageToCloudinary(file);
 
-  if (statusEl) statusEl.textContent = "Checking for human face...";
+  setUploadStatus(statusEl, "Checking for human face...", "progress");
   await validateUploadedPhotoHasFace(uploadedUrl);
 
-  if (statusEl) statusEl.textContent = "Photo uploaded and face verified";
+  setUploadStatus(statusEl, "Photo uploaded and face verified", "success");
   return uploadedUrl;
 }
 
@@ -316,7 +359,7 @@ function setupPhotoUpload(uploadBtnId, fileId, urlId, statusId) {
     } catch (err) {
       const code = err instanceof Error ? err.message : "NO_FACE_DETECTED";
       const message = humanFaceValidationMessage(code);
-      if (statusEl) statusEl.textContent = "Upload rejected";
+      setUploadStatus(statusEl, "Upload rejected", "error");
       if (urlInput) {
         urlInput.value = "";
         delete urlInput.dataset.uploadedFileSignature;
@@ -393,7 +436,7 @@ function setupMissingForm() {
       const urlEl = document.getElementById("missingPhotoUrl");
       if (urlEl?.dataset) delete urlEl.dataset.uploadedFileSignature;
       const statusEl = document.getElementById("missingPhotoStatus");
-      if (statusEl) statusEl.textContent = "No photo uploaded";
+      setUploadStatus(statusEl, "No photo uploaded", "neutral");
       notify("Missing person report submitted", "success");
     } catch (err) {
       notify(err instanceof Error ? err.message : "Failed to submit missing report (or upload image)", "error");
@@ -443,7 +486,7 @@ function setupFoundForm() {
       const urlEl = document.getElementById("foundPhotoUrl");
       if (urlEl?.dataset) delete urlEl.dataset.uploadedFileSignature;
       const statusEl = document.getElementById("foundPhotoStatus");
-      if (statusEl) statusEl.textContent = "No photo uploaded";
+      setUploadStatus(statusEl, "No photo uploaded", "neutral");
       notify("Found/Suspicion report submitted", "success");
     } catch (err) {
       notify(err instanceof Error ? err.message : "Failed to submit found report (or upload image)", "error");
