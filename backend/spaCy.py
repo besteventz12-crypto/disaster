@@ -346,6 +346,25 @@ def _fetch_face_embedding_from_ai(photo_url):
     }
 
 
+def validate_face_photo_url(photo_url):
+    cleaned_url = str(photo_url or "").strip()
+    if not cleaned_url:
+        return {
+            "faceDetected": False,
+            "faceProcessingError": "NO_IMAGE_URL",
+        }
+
+    transient = {"photoUrl": cleaned_url}
+    _attach_face_embedding_fields(transient)
+
+    return {
+        "faceDetected": bool(transient.get("faceDetected", False)),
+        "faceProcessingError": transient.get("faceProcessingError") or "",
+        "faceEmbeddingModel": transient.get("faceEmbeddingModel") or "ArcFace",
+        "faceProcessedAt": transient.get("faceProcessedAt") or _iso_now(),
+    }
+
+
 def _attach_face_embedding_fields(record):
     photo_url = str(record.get("photoUrl") or "").strip()
     if not photo_url:

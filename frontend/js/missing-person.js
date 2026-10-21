@@ -216,6 +216,55 @@ async function uploadImageToCloudinary(file) {
   return url;
 }
 
+function humanFaceValidationMessage(code) {
+  const normalized = String(code || "").trim().toUpperCase();
+  const messageMap = {
+    NO_FACE_DETECTED: "No human face detected. Please upload a clear human face photo.",
+    INVALID_IMAGE_URL: "Invalid image URL received. Please try uploading again.",
+    UNSUPPORTED_IMAGE: "Unsupported image format. Please upload a valid image.",
+    BROKEN_IMAGE: "Image could not be read. Please upload a different photo.",
+    AI_TIMEOUT: "Face check timed out. Please try again.",
+    AI_SERVICE_UNAVAILABLE: "Face check service is unavailable. Please try again in a moment.",
+    AI_PROCESSING_FAILED: "Face check failed. Please upload a clearer image.",
+    INVALID_EMBEDDING: "Face check failed due to invalid face data. Use another image.",
+    NO_IMAGE_URL: "No uploaded image URL found. Please upload again.",
+  };
+  return messageMap[normalized] || "Face verification failed. Upload a clear human face photo.";
+}
+
+async function validateUploadedPhotoHasFace(photoUrl) {
+  const response = await fetch(`${API_BASE_URL}/face/validate-photo`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ photoUrl }),
+  });
+
+  if (!response.ok) {
+    throw new Error("FACE_VALIDATION_REQUEST_FAILED");
+  }
+
+  const payload = await response.json();
+  const result = payload?.result || {};
+  const faceDetected = Boolean(result?.faceDetected);
+  if (!faceDetected) {
+    const code = result?.faceProcessingError || "NO_FACE_DETECTED";
+    throw new Error(code);
+  }
+
+  return true;
+}
+
+async function uploadAndValidateHumanPhoto(file, statusEl) {
+  if (statusEl) statusEl.textContent = "Uploading to Cloudinary...";
+  const uploadedUrl = await uploadImageToCloudinary(file);
+
+  if (statusEl) statusEl.textContent = "Checking for human face...";
+  await validateUploadedPhotoHasFace(uploadedUrl);
+
+  if (statusEl) statusEl.textContent = "Photo uploaded and face verified";
+  return uploadedUrl;
+}
+
 async function ensureCloudinaryPhotoUrl({ fileId, urlId, statusId }) {
   const fileInput = document.getElementById(fileId);
   const urlInput = document.getElementById(urlId);
@@ -232,11 +281,16 @@ async function ensureCloudinaryPhotoUrl({ fileId, urlId, statusId }) {
     return existingUrl;
   }
 
-  if (statusEl) statusEl.textContent = "Uploading to Cloudinary...";
-  const uploadedUrl = await uploadImageToCloudinary(selectedFile);
-  if (urlInput) urlInput.value = uploadedUrl;
-  if (statusEl) statusEl.textContent = "Photo uploaded";
-  return uploadedUrl;
+  try {
+    const uploadedUrl = await uploadAndValidateHumanPhoto(selectedFile, statusEl);
+    if (urlInput) urlInput.value = uploadedUrl;
+    return uploadedUrl;
+  } catch (err) {
+    const code = err instanceof Error ? err.message : "NO_FACE_DETECTED";
+    if (statusEl) statusEl.textContent = "Upload rejected";
+    if (urlInput) urlInput.value = "";
+    throw new Error(humanFaceValidationMessage(code));
+  }
 }
 
 function setupPhotoUpload(uploadBtnId, fileId, urlId, statusId) {
@@ -254,16 +308,16 @@ function setupPhotoUpload(uploadBtnId, fileId, urlId, statusId) {
 
     uploadBtn.disabled = true;
     uploadBtn.textContent = "Uploading...";
-    if (statusEl) statusEl.textContent = "Uploading to Cloudinary...";
-
     try {
-      const url = await uploadImageToCloudinary(file);
+      const url = await uploadAndValidateHumanPhoto(file, statusEl);
       if (urlInput) urlInput.value = url;
-      if (statusEl) statusEl.textContent = "Photo uploaded";
-      notify("Image uploaded successfully", "success");
+      notify("Image uploaded and human face verified", "success");
     } catch (err) {
-      if (statusEl) statusEl.textContent = "Upload failed";
-      notify("Image upload failed", "error");
+      const code = err instanceof Error ? err.message : "NO_FACE_DETECTED";
+      const message = humanFaceValidationMessage(code);
+      if (statusEl) statusEl.textContent = "Upload rejected";
+      if (urlInput) urlInput.value = "";
+      notify(message, "error");
     } finally {
       uploadBtn.disabled = false;
       uploadBtn.textContent = "Upload Photo";
@@ -336,7 +390,7 @@ function setupMissingForm() {
       if (statusEl) statusEl.textContent = "No photo uploaded";
       notify("Missing person report submitted", "success");
     } catch (err) {
-      notify("Failed to submit missing report (or upload image)", "error");
+      notify(err instanceof Error ? err.message : "Failed to submit missing report (or upload image)", "error");
     }
   });
 }
@@ -384,7 +438,7 @@ function setupFoundForm() {
       if (statusEl) statusEl.textContent = "No photo uploaded";
       notify("Found/Suspicion report submitted", "success");
     } catch (err) {
-      notify("Failed to submit found report (or upload image)", "error");
+      notify(err instanceof Error ? err.message : "Failed to submit found report (or upload image)", "error");
     }
   });
 }

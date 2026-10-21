@@ -98,6 +98,10 @@ class MatchRunRequest(BaseModel):
     threshold: Optional[float] = 0.62
 
 
+class FaceValidationIn(BaseModel):
+    photoUrl: str
+
+
 class ShelterIn(BaseModel):
     name: str
     latitude: float
@@ -328,6 +332,12 @@ async def upload_file(file: UploadFile = File(...)):
     content_type = file.content_type or "application/octet-stream"
     res = spaCy.process_bytes(contents, filename=filename, content_type=content_type)
     return {"ok": True, "result": res}
+
+
+@app.post("/face/validate-photo")
+def validate_photo_face(payload: FaceValidationIn):
+    result = spaCy.validate_face_photo_url(payload.photoUrl)
+    return {"ok": True, "result": result}
 
 
 if __name__ == "__main__":
